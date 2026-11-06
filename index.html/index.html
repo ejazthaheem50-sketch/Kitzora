@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kitzora – Free QR Code Generator, PDF Tools, BMI Calculator &amp; Image Compressor</title>
+<meta name="description" content="Kitzora is a free online toolbox: QR code generator, age &amp; BMI calculator, image compressor and PDF tools to merge, compress and convert. Fast, private, no signup.">
+<meta name="keywords" content="qr code generator, merge pdf, compress pdf, images to pdf, image compressor, bmi calculator, age calculator, free online tools">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#070914">
+<link rel="canonical" href="https://www.kitzora.com/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Kitzora"><meta property="og:title" content="Kitzora – Free QR Code Generator, PDF Tools, BMI Calculator &amp; Image Compressor"><meta property="og:description" content="Kitzora is a free online toolbox: QR code generator, age &amp; BMI calculator, image compressor and PDF tools to merge, compress and convert. Fast, private, no signup."><meta property="og:url" content="https://www.kitzora.com/"><meta property="og:image" content="https://www.kitzora.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Kitzora – Free QR Code Generator, PDF Tools, BMI Calculator &amp; Image Compressor"><meta name="twitter:description" content="Kitzora is a free online toolbox: QR code generator, age &amp; BMI calculator, image compressor and PDF tools to merge, compress and convert. Fast, private, no signup.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='.6' stop-color='%23ec4899'/%3E%3Cstop offset='1' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M36 8 16 36h14l-4 20 22-30H34z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+:root{--bg:#070914;--txt:#e9ebff;--mut:#9aa0c6;--card:rgba(255,255,255,.055);--bd:rgba(255,255,255,.11);--inp:rgba(255,255,255,.07);--nav:rgba(10,12,28,.8);--stat:rgba(0,0,0,.28);--a1:#6366f1;--a2:#8b5cf6;--a3:#22d3ee;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185;--grad:linear-gradient(135deg,var(--a1),var(--a2) 55%,var(--a3));--glow:0 10px 50px -14px rgba(99,102,241,.5);color-scheme:dark}
+[data-theme=light]{--bg:#eef1fb;--txt:#171b38;--mut:#596082;--card:rgba(255,255,255,.74);--bd:rgba(90,100,170,.2);--inp:rgba(255,255,255,.95);--nav:rgba(255,255,255,.88);--stat:rgba(99,102,241,.08);--glow:0 10px 40px -16px rgba(99,102,241,.4);color-scheme:light}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:400 15px/1.5 Outfit,system-ui,sans-serif;color:var(--txt);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(40rem 30rem at 0 0,rgba(99,102,241,.3),transparent 60%),radial-gradient(36rem 28rem at 100% 35%,rgba(139,92,246,.22),transparent 60%),radial-gradient(34rem 26rem at 35% 100%,rgba(34,211,238,.2),transparent 60%),radial-gradient(24rem 20rem at 90% 95%,rgba(244,114,182,.16),transparent 60%)}
+[data-theme=light] body::before{opacity:.6}
+.hide{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+.app{max-width:80rem;margin:auto}
+/* navigation: bottom bar on phones, sidebar on desktop */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:space-around;padding:.4rem;background:var(--nav);backdrop-filter:blur(18px);border-top:1px solid var(--bd)}
+.brand,.navnote,.theme-d{display:none}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem .2rem;border:0;border-radius:.9rem;background:none;color:var(--mut);font-size:.68rem;transition:.2s}
+.nb svg{width:1.3rem;height:1.3rem}
+.nb:hover{color:var(--txt)}
+.nb.on{color:var(--txt);background:linear-gradient(135deg,color-mix(in srgb,var(--c) 30%,transparent),color-mix(in srgb,var(--c) 6%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent)}
+.nb.on svg{color:var(--c)}
+main{padding:1.1rem 1rem 6.5rem}
+.logo{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:.8rem;background:var(--grad);color:#fff;box-shadow:0 6px 24px -4px rgba(34,211,238,.55)}
+.mhead{display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;font-size:1.25rem;font-weight:600}
+.tbtn{margin-left:auto;display:grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:.8rem;border:1px solid var(--bd);background:var(--card);color:var(--txt)}
+.sun{display:none}[data-theme=light] .sun{display:block}[data-theme=light] .moon{display:none}
+@media(min-width:768px){
+ .app{display:flex;gap:1.5rem;padding:1.5rem}
+ nav{position:sticky;top:1.5rem;left:auto;right:auto;bottom:auto;align-self:flex-start;width:16.5rem;flex-direction:column;justify-content:flex-start;gap:.3rem;padding:1rem;border:1px solid var(--bd);border-radius:1.3rem;box-shadow:var(--glow)}
+ .brand{display:flex;align-items:center;gap:.8rem;padding:.2rem .4rem 1rem}.brand b{display:block;font-size:1.1rem;line-height:1.2}.brand small{color:var(--mut);font-size:.75rem}
+ .navnote{display:block;margin-top:1rem;padding:0 .4rem;font-size:.72rem;color:var(--mut)}
+ .theme-d{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.8rem;padding:.65rem;border-radius:.85rem;border:1px solid var(--bd);background:var(--card);color:var(--txt)}
+ .nb{flex:none;flex-direction:row;gap:.8rem;padding:.8rem .9rem;font-size:.92rem}
+ main{flex:1;min-width:0;padding:0}.mhead{display:none}}
+/* layout + cards */
+section{display:flex;flex-direction:column;gap:1.1rem}
+.glass{background:var(--card);border:1px solid var(--bd);border-radius:1.25rem;padding:1.2rem;backdrop-filter:blur(20px);box-shadow:var(--glow);display:flex;flex-direction:column;gap:1rem}
+h2{display:flex;align-items:center;gap:.75rem;font-size:1.6rem;font-weight:650;letter-spacing:-.02em}
+h3{display:flex;align-items:center;gap:.5rem;font-weight:600}
+.chip{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:.85rem;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--c);flex:none}
+.g2,.g3,.g4{display:grid;gap:1rem}
+@media(min-width:560px){.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g2s{grid-template-columns:repeat(2,1fr)}}
+.g4{grid-template-columns:repeat(2,1fr)}@media(min-width:560px){.g4{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1024px){.g2{grid-template-columns:1fr 1fr}}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem}
+.mut{color:var(--mut);font-size:.88rem}.c{text-align:center}.ctr{align-items:center;justify-content:center}
+/* controls */
+.lbl{display:block;margin-bottom:.4rem;font-size:.85rem;color:var(--mut)}
+.inp{width:100%;padding:.7rem 1rem;border-radius:.85rem;border:1px solid var(--bd);background:var(--inp);color:var(--txt);font:inherit;outline:0;transition:.2s}
+.inp:focus{border-color:var(--a3);box-shadow:0 0 0 3px rgba(34,211,238,.18)}
+textarea.inp{resize:none}input[type=color].inp{height:2.8rem;padding:.2rem}
+input[type=range]{width:100%;accent-color:var(--a2);height:1.4rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.4rem;border:0;border-radius:.9rem;background:var(--grad);color:#fff;font-weight:500;box-shadow:0 8px 26px -8px rgba(99,102,241,.8);transition:.2s}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;pointer-events:none}
+.btn svg,.nb svg,.chip svg{flex:none}
+.btn-g{padding:.5rem .9rem;border-radius:.75rem;border:1px solid var(--bd);background:var(--card);font-size:.85rem}.btn-g:hover{background:var(--inp)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:.25rem;padding:.25rem;border-radius:.95rem;background:var(--stat);border:1px solid var(--bd);width:fit-content;max-width:100%}
+.seg button{padding:.5rem 1rem;border:0;border-radius:.7rem;background:none;color:var(--mut);font-size:.88rem}
+.seg button.on{background:var(--grad);color:#fff;box-shadow:0 4px 16px -4px rgba(99,102,241,.7)}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;padding:2.2rem 1rem;text-align:center;color:var(--mut);cursor:pointer;border:2px dashed var(--bd);border-radius:1.25rem;background:var(--card);transition:.2s}
+.drop:hover,.drop.over{border-color:var(--c,var(--a3));background:color-mix(in srgb,var(--c,var(--a3)) 9%,transparent)}
+.drop svg{width:2.4rem;height:2.4rem;color:var(--c)}
+.stat{padding:.8rem;border-radius:.9rem;background:var(--stat);border:1px solid var(--bd);text-align:center}
+.stat b{display:block;font-size:1.5rem;color:var(--c)}.stat small{color:var(--mut);font-size:.75rem}.stat b.sm{font-size:1.05rem}
+.bar{height:.75rem;border-radius:9rem;background:var(--stat);border:1px solid var(--bd);overflow:hidden}.bar i{display:block;height:100%;border-radius:9rem;width:0;transition:width .5s,background .5s}
+.li{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.6rem .9rem;border-radius:.8rem;background:var(--stat);border:1px solid var(--bd);font-size:.88rem;list-style:none}
+.li span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.li button{border:0;background:none;color:var(--bad)}
+ul{display:flex;flex-direction:column;gap:.5rem;padding:0}
+.stage{position:relative;display:grid;place-items:center;overflow:hidden;min-height:10rem;padding:.5rem;border-radius:1rem;border:1px solid var(--bd)}
+.checker{background:conic-gradient(#8a8fa8 25%,#c9cce0 0 50%,#8a8fa8 0 75%,#c9cce0 0) 0 0/18px 18px}
+[data-theme=dark] .checker{background:conic-gradient(#2a2d3f 25%,#1a1c2b 0 50%,#2a2d3f 0 75%,#1a1c2b 0) 0 0/18px 18px}
+.stage img,.stage canvas{max-width:100%;max-height:30rem;border-radius:.5rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+#toast{position:fixed;left:50%;top:1.2rem;z-index:50;transform:translate(-50%,-6rem);padding:.8rem 1.3rem;border-radius:.9rem;background:var(--nav);border:1px solid var(--bd);backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.35);font-size:.9rem;transition:transform .3s;pointer-events:none}
+#toast.show{transform:translate(-50%,0)}
+:focus-visible{outline:2px solid var(--a3);outline-offset:2px}
+
+a{color:inherit}.nb{text-decoration:none}.nb svg{color:var(--c)}
+:root{--grad:linear-gradient(120deg,#6366f1,#8b5cf6 38%,#ec4899 72%,#f59e0b)}
+.brandtxt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.glass{border-top:2px solid color-mix(in srgb,var(--c,#8b5cf6) 75%,transparent)}
+h1{display:flex;align-items:center;gap:.75rem;font-size:1.6rem;font-weight:650;letter-spacing:-.02em;line-height:1.2}
+.seo h2{font-size:1.25rem;display:block}.seo p,.seo li{color:var(--mut)}.seo ol{padding-left:1.3rem;display:flex;flex-direction:column;gap:.4rem}
+details{border:1px solid var(--bd);border-radius:.9rem;padding:.7rem 1rem;background:var(--stat)}summary{cursor:pointer;font-weight:600}details p{margin-top:.5rem}
+.cards{display:grid;gap:1rem}@media(min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+.card{display:flex;flex-direction:column;gap:.6rem;padding:1.3rem;border-radius:1.25rem;text-decoration:none;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 20%,transparent),var(--card));border:1px solid color-mix(in srgb,var(--c) 40%,var(--bd));transition:.25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 44px -18px var(--c)}.card h2{font-size:1.2rem}.card p{color:var(--mut)}.card b{color:var(--c)}
+.hero{padding:1.2rem 0}.hero h1{display:block;font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.1}.hero p{margin-top:.8rem;color:var(--mut);font-size:1.05rem;max-width:42rem}
+footer{margin-top:1.5rem;padding:1rem 0;color:var(--mut);font-size:.85rem;display:flex;flex-wrap:wrap;gap:.6rem 1.2rem}footer a{text-decoration:none}footer a:hover{color:var(--txt)}
+
+.nb,section>h2{text-transform:uppercase;letter-spacing:.04em}section>h2{font-size:1.35rem}
+.pagetitle{font-size:.95rem;font-weight:400;color:var(--mut);margin-bottom:1rem;display:block}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Kitzora", "url": "https://www.kitzora.com/", "description": "Kitzora is a free online toolbox: QR code generator, age & BMI calculator, image compressor and PDF tools to merge, compress and convert. Fast, private, no signup."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "WebApplication", "name": "Free QR Code Generator", "url": "https://www.kitzora.com/#qr-code-generator", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "description": "Create a free QR code online from any text or URL. Pick custom colors and size, preview it live and download a sharp PNG. No signup, no watermark.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}}, {"@type": "ListItem", "position": 2, "item": {"@type": "WebApplication", "name": "Age Calculator & BMI Calculator", "url": "https://www.kitzora.com/#age-bmi-calculator", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "description": "Free online age calculator and BMI calculator. Get your exact age in years, months, days and hours, and check your BMI with cm/kg or ft/lbs.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}}, {"@type": "ListItem", "position": 3, "item": {"@type": "WebApplication", "name": "Image Compressor & Resizer", "url": "https://www.kitzora.com/#image-compressor", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "description": "Compress and resize JPG, PNG and WebP images online for free. Choose quality from 10 to 100%, see the saved size instantly and download. Runs privately in your browser.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}}, {"@type": "ListItem", "position": 4, "item": {"@type": "WebApplication", "name": "PDF Tools: Merge, Compress & Images to PDF", "url": "https://www.kitzora.com/#pdf-tools", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "description": "Merge PDF files, compress a PDF and convert images to PDF online for free. Everything runs in your browser, so your documents stay private.", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is this QR code generator really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is free, needs no account and adds no watermark to your QR code."}}, {"@type": "Question", "name": "Will my QR code expire?", "acceptedAnswer": {"@type": "Answer", "text": "No. The QR code simply stores the text or link you typed, so it keeps working as long as that link works."}}, {"@type": "Question", "name": "Which colors scan best?", "acceptedAnswer": {"@type": "Answer", "text": "Use a dark foreground on a light background with strong contrast. Very light or low-contrast colors may not scan on every phone."}}, {"@type": "Question", "name": "Is my data uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. The QR code is generated inside your browser, so your text never leaves your device."}}, {"@type": "Question", "name": "How is BMI calculated?", "acceptedAnswer": {"@type": "Answer", "text": "BMI is weight in kilograms divided by height in meters squared. In imperial units it is 703 times weight in pounds divided by height in inches squared."}}, {"@type": "Question", "name": "What is a normal BMI range?", "acceptedAnswer": {"@type": "Answer", "text": "For most adults a BMI from 18.5 to 24.9 is considered the normal range."}}, {"@type": "Question", "name": "Is BMI a medical diagnosis?", "acceptedAnswer": {"@type": "Answer", "text": "No. BMI is a general screening number and does not measure body fat or muscle. Talk to a doctor for personal health advice."}}, {"@type": "Question", "name": "Is my date of birth stored?", "acceptedAnswer": {"@type": "Answer", "text": "No. All calculations run in your browser and nothing is sent anywhere."}}, {"@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Compression happens on your device in the browser, so your photos stay private."}}, {"@type": "Question", "name": "What format is the result?", "acceptedAnswer": {"@type": "Answer", "text": "The compressed file is saved as JPEG. Transparent areas of a PNG become white."}}, {"@type": "Question", "name": "What quality should I choose?", "acceptedAnswer": {"@type": "Answer", "text": "Around 60 to 80 percent usually gives a big size reduction with little visible loss."}}, {"@type": "Question", "name": "Can I resize as well?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Enter a maximum width and the image is scaled down while keeping its proportions."}}, {"@type": "Question", "name": "Are my PDF files uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing runs locally in your browser."}}, {"@type": "Question", "name": "How much does Compress PDF save?", "acceptedAnswer": {"@type": "Answer", "text": "It rewrites the PDF structure, so savings are small for files that are mostly large images. Text-heavy PDFs benefit most."}}, {"@type": "Question", "name": "Can I turn JPG or PNG files into a PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use Images to PDF; each image becomes one page in the order you list them."}}, {"@type": "Question", "name": "Can it open password-protected PDFs?", "acceptedAnswer": {"@type": "Answer", "text": "Encrypted PDFs may fail to process. Remove the password first with the original app."}}]}</script>
+</head>
+<body>
+<div class="app">
+  <nav aria-label="Main">
+    <a class="brand" href="#qr-code-generator" style="text-decoration:none"><div class="logo"><i data-lucide="zap"></i></div><div><b class="brandtxt">Kitzora</b><small>Free online tools</small></div></a>
+    <a class="nb" data-nav="qr-code-generator" href="#qr-code-generator" style="--c:#22d3ee"><i data-lucide="qr-code"></i>QR Code</a><a class="nb" data-nav="age-bmi-calculator" href="#age-bmi-calculator" style="--c:#f472b6"><i data-lucide="heart-pulse"></i>Age &amp; BMI</a><a class="nb" data-nav="image-compressor" href="#image-compressor" style="--c:#fbbf24"><i data-lucide="image-down"></i>Compressor</a><a class="nb" data-nav="pdf-tools" href="#pdf-tools" style="--c:#34d399"><i data-lucide="file-text"></i>PDF Tools</a>
+    <p class="navnote">Your files never leave this device. Every tool runs locally.</p>
+    <button class="theme-d" data-theme-toggle><i data-lucide="moon" class="moon"></i><i data-lucide="sun" class="sun"></i>Switch theme</button>
+  </nav>
+  <main>
+    <header class="mhead"><div class="logo"><i data-lucide="zap"></i></div><span class="brandtxt">Kitzora</span>
+      <button class="tbtn" data-theme-toggle aria-label="Switch theme"><i data-lucide="moon" class="moon"></i><i data-lucide="sun" class="sun"></i></button></header>
+    <h1 class="pagetitle">Free online QR code generator, age &amp; BMI calculator, image compressor and PDF tools</h1>
+    <section id="qr-code-generator" data-tool="qr" style="--c:#22d3ee">
+      <h2><span class="chip"><i data-lucide="qr-code"></i></span>Free QR Code Generator</h2>
+      <div class="g2">
+        <div class="glass">
+          <div><label class="lbl" for="qrText">Text or URL</label><textarea id="qrText" rows="3" class="inp">https://example.com</textarea></div>
+          <div class="g3" style="grid-template-columns:1fr 1fr"><div><label class="lbl" for="qrFg">Foreground</label><input id="qrFg" type="color" value="#4f46e5" class="inp"></div>
+          <div><label class="lbl" for="qrBg">Background</label><input id="qrBg" type="color" value="#ffffff" class="inp"></div></div>
+          <div><label class="lbl" for="qrSize">Size: <span id="qrSizeV">300</span>px</label><input id="qrSize" type="range" min="150" max="600" step="10" value="300"></div>
+        </div>
+        <div class="glass ctr"><canvas id="qrCanvas" style="max-width:100%;border-radius:1rem;box-shadow:0 0 50px rgba(99,102,241,.45)"></canvas>
+          <button id="qrDl" class="btn"><i data-lucide="download"></i>Download PNG</button></div>
+      </div>
+        <article class="glass seo" style="--c:#22d3ee"><h3>About this free tool</h3><p>Turn any link, text, Wi-Fi note or phone number into a scannable QR code in seconds. Choose your own foreground and background colors, set the size and download a high-quality PNG for print or screens.</p>
+      <h3>How to use it</h3><ol><li>Type or paste your URL or text into the box.</li><li>Pick the foreground and background colors and the size.</li><li>Check the live preview, then press Download PNG.</li></ol>
+      <h3>Frequently asked questions</h3><details><summary>Is this QR code generator really free?</summary><p>Yes. It is free, needs no account and adds no watermark to your QR code.</p></details><details><summary>Will my QR code expire?</summary><p>No. The QR code simply stores the text or link you typed, so it keeps working as long as that link works.</p></details><details><summary>Which colors scan best?</summary><p>Use a dark foreground on a light background with strong contrast. Very light or low-contrast colors may not scan on every phone.</p></details><details><summary>Is my data uploaded?</summary><p>No. The QR code is generated inside your browser, so your text never leaves your device.</p></details><p>More free tools: <a href="#age-bmi-calculator">Age & BMI</a> · <a href="#image-compressor">Compressor</a> · <a href="#pdf-tools">PDF Tools</a></p></article>
+    </section>
+    <section id="age-bmi-calculator" data-tool="health" style="--c:#f472b6">
+      <h2><span class="chip"><i data-lucide="heart-pulse"></i></span>Age Calculator &amp; BMI Calculator</h2>
+      <div class="g2">
+        <div class="glass">
+          <h3><i data-lucide="cake" style="color:var(--c)"></i>Age calculator</h3>
+          <div><label class="lbl" for="dob">Date of birth</label><input id="dob" type="date" class="inp"></div>
+          <div id="ageOut" class="g4"></div>
+          <p id="ageTot" class="mut">Pick your date of birth to see your exact age.</p>
+        </div>
+        <div class="glass">
+          <div class="row" style="justify-content:space-between"><h3><i data-lucide="activity" style="color:#22d3ee"></i>BMI calculator</h3>
+            <div class="seg"><button id="uM" class="on">cm / kg</button><button id="uI">ft / lbs</button></div></div>
+          <div><label class="lbl" for="bH">Height: <b id="bHv"></b></label><input id="bH" type="range"></div>
+          <div><label class="lbl" for="bW">Weight: <b id="bWv"></b></label><input id="bW" type="range"></div>
+          <div class="c"><div id="bmiNum" style="font-size:3.2rem;font-weight:700;line-height:1.1">--</div><div id="bmiCat" style="font-weight:600"></div></div>
+          <div class="bar"><i id="bmiBar"></i></div>
+          <div class="row mut" style="justify-content:space-between;font-size:.75rem"><span>10</span><span>18.5</span><span>25</span><span>30</span><span>40</span></div>
+        </div>
+      </div>
+        <article class="glass seo" style="--c:#f472b6"><h3>About this free tool</h3><p>Find your exact age from your date of birth in years, months, days and hours, and calculate your Body Mass Index using metric or imperial units with a clear color-coded result.</p>
+      <h3>How to use it</h3><ol><li>Choose your date of birth to see your exact age.</li><li>Set your height and weight with the sliders, in cm/kg or ft/lbs.</li><li>Read your BMI value and category: Underweight, Normal, Overweight or Obese.</li></ol>
+      <h3>Frequently asked questions</h3><details><summary>How is BMI calculated?</summary><p>BMI is weight in kilograms divided by height in meters squared. In imperial units it is 703 times weight in pounds divided by height in inches squared.</p></details><details><summary>What is a normal BMI range?</summary><p>For most adults a BMI from 18.5 to 24.9 is considered the normal range.</p></details><details><summary>Is BMI a medical diagnosis?</summary><p>No. BMI is a general screening number and does not measure body fat or muscle. Talk to a doctor for personal health advice.</p></details><details><summary>Is my date of birth stored?</summary><p>No. All calculations run in your browser and nothing is sent anywhere.</p></details><p>More free tools: <a href="#qr-code-generator">QR Code</a> · <a href="#image-compressor">Compressor</a> · <a href="#pdf-tools">PDF Tools</a></p></article>
+    </section>
+    <section id="image-compressor" data-tool="img" style="--c:#fbbf24">
+      <h2><span class="chip"><i data-lucide="image-down"></i></span>Image Compressor &amp; Resizer</h2>
+      <label id="imgDrop" class="drop"><i data-lucide="image-up"></i><span>Drag &amp; drop an image, or click to browse</span><input id="imgIn" type="file" accept="image/*" hidden></label>
+      <div id="imgPanel" class="glass hide">
+        <div class="g3" style="grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))">
+          <div><label class="lbl" for="imgQ">Quality: <b id="imgQv">70</b>%</label><input id="imgQ" type="range" min="10" max="100" value="70"></div>
+          <div><label class="lbl" for="imgW">Max width in px (blank = original)</label><input id="imgW" type="number" min="16" class="inp" placeholder="e.g. 1280"></div>
+        </div>
+        <div class="g3"><div class="stat"><small>Original</small><b id="imgO" class="sm"></b></div><div class="stat"><small>Compressed</small><b id="imgC" class="sm"></b></div><div class="stat"><small>Saved</small><b id="imgS" class="sm"></b></div></div>
+        <div class="stage checker"><img id="imgPrev" alt="Compressed preview"></div>
+        <button id="imgDl" class="btn" style="align-self:flex-start"><i data-lucide="download"></i>Download compressed</button>
+      </div>
+        <article class="glass seo" style="--c:#fbbf24"><h3>About this free tool</h3><p>Shrink photos for websites, email and social media without uploading them anywhere. Drag in an image, pick the quality, optionally set a maximum width and download the smaller file.</p>
+      <h3>How to use it</h3><ol><li>Drop your image into the upload area.</li><li>Move the quality slider and optionally enter a maximum width.</li><li>Compare the sizes, then download the compressed image.</li></ol>
+      <h3>Frequently asked questions</h3><details><summary>Are my images uploaded to a server?</summary><p>No. Compression happens on your device in the browser, so your photos stay private.</p></details><details><summary>What format is the result?</summary><p>The compressed file is saved as JPEG. Transparent areas of a PNG become white.</p></details><details><summary>What quality should I choose?</summary><p>Around 60 to 80 percent usually gives a big size reduction with little visible loss.</p></details><details><summary>Can I resize as well?</summary><p>Yes. Enter a maximum width and the image is scaled down while keeping its proportions.</p></details><p>More free tools: <a href="#qr-code-generator">QR Code</a> · <a href="#age-bmi-calculator">Age & BMI</a> · <a href="#pdf-tools">PDF Tools</a></p></article>
+    </section>
+    <section id="pdf-tools" data-tool="pdf" style="--c:#34d399">
+      <h2><span class="chip"><i data-lucide="file-text"></i></span>PDF Tools: Merge, Compress &amp; Images to PDF</h2>
+      <div id="pdfTabs" class="seg"></div>
+      <div class="glass">
+        <p id="pdfHint" class="mut"></p>
+        <label id="pdfDrop" class="drop"><i data-lucide="file-up"></i><span>Drag &amp; drop files, or click to browse</span><input id="pdfIn" type="file" multiple hidden></label>
+        <ul id="pdfList"></ul>
+        <button id="pdfGo" class="btn" style="align-self:flex-start" disabled><i data-lucide="sparkles"></i><span id="pdfGoT"></span></button>
+      </div>
+        <article class="glass seo" style="--c:#34d399"><h3>About this free tool</h3><p>Combine several PDFs into one, optimize a PDF file, or turn photos and scans into a single PDF. Your files are processed inside your browser and are never uploaded.</p>
+      <h3>How to use it</h3><ol><li>Pick Merge PDF, Compress PDF or Images to PDF.</li><li>Add your files, remove or reorder them in the list.</li><li>Press the action button and your new PDF downloads automatically.</li></ol>
+      <h3>Frequently asked questions</h3><details><summary>Are my PDF files uploaded?</summary><p>No. All processing runs locally in your browser.</p></details><details><summary>How much does Compress PDF save?</summary><p>It rewrites the PDF structure, so savings are small for files that are mostly large images. Text-heavy PDFs benefit most.</p></details><details><summary>Can I turn JPG or PNG files into a PDF?</summary><p>Yes. Use Images to PDF; each image becomes one page in the order you list them.</p></details><details><summary>Can it open password-protected PDFs?</summary><p>Encrypted PDFs may fail to process. Remove the password first with the original app.</p></details><p>More free tools: <a href="#qr-code-generator">QR Code</a> · <a href="#age-bmi-calculator">Age & BMI</a> · <a href="#image-compressor">Compressor</a></p></article>
+    </section>
+
+    <footer><span>© 2026 Kitzora – free online tools</span></footer>
+  </main>
+</div>
+<div id="toast" role="status"></div>
+<noscript><p style="padding:1rem">Please enable JavaScript to use these tools.</p></noscript>
+<script>
+'use strict';
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const fmt = b => b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(1) + ' KB' : (b / 1048576).toFixed(2) + ' MB';
+const debounce = (fn, ms = 150) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const icons = () => { try { window.lucide && lucide.createIcons(); } catch (e) {} };
+let toastT;
+function toast(msg, ok = true) {
+  const t = $('toast'); t.textContent = (ok ? '✓ ' : '⚠ ') + msg; t.style.color = ok ? 'var(--ok)' : 'var(--bad)';
+  t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800);
+}
+function download(blobOrUrl, name) {
+  const url = typeof blobOrUrl === 'string' ? blobOrUrl : URL.createObjectURL(blobOrUrl);
+  const a = Object.assign(document.createElement('a'), { href: url, download: name });
+  document.body.appendChild(a); a.click(); a.remove();
+  if (typeof blobOrUrl !== 'string') setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function setupDrop(zone, input, cb) {
+  ['dragenter', 'dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('over'); }));
+  zone.addEventListener('drop', ev => cb([...ev.dataTransfer.files]));
+  input.addEventListener('change', () => { cb([...input.files]); input.value = ''; });
+}
+// FileReader + data: URL works inside sandboxed iframes and never taints the canvas
+const loadImg = file => new Promise((res, rej) => {
+  const fr = new FileReader();
+  fr.onerror = () => rej(new Error('Could not read the file'));
+  fr.onload = () => { const img = new Image(); img.onload = () => res(img); img.onerror = () => rej(new Error('Not a valid image')); img.src = fr.result; };
+  fr.readAsDataURL(file);
+});
+const isImg = f => f.type.startsWith('image/') || /\.(png|jpe?g|gif|webp|bmp|avif)$/i.test(f.name);
+
+/* ---------- Theme (night mode default) ---------- */
+function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('kitzora-theme', t); } catch (e) {} }
+try { setTheme(localStorage.getItem('kitzora-theme') || 'dark'); } catch (e) {}
+document.querySelectorAll('[data-theme-toggle]').forEach(b => b.onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+
+document.addEventListener("DOMContentLoaded", () => {
+/* ---------- 1. QR ---------- */
+let qr = null; try { qr = new QRious({ element: $('qrCanvas'), size: 300, level: 'H' }); } catch (e) {}
+function drawQR() {
+  $('qrSizeV').textContent = $('qrSize').value; if (!qr) return;
+  qr.set({ value: $('qrText').value || ' ', foreground: $('qrFg').value, background: $('qrBg').value, size: +$('qrSize').value });
+}
+['qrText', 'qrFg', 'qrBg', 'qrSize'].forEach(id => $(id).addEventListener('input', drawQR));
+$('qrDl').onclick = () => { download($('qrCanvas').toDataURL('image/png'), 'qrcode.png'); toast('QR code downloaded'); };
+drawQR();
+
+/* ---------- 2. Age + BMI ---------- */
+$('dob').max = new Date().toISOString().slice(0, 10);
+$('dob').addEventListener('input', () => {
+  const v = $('dob').value; if (!v) return;
+  const d = new Date(v + 'T00:00:00'), n = new Date();
+  if (d > n) return toast('Date of birth is in the future', false);
+  let y = n.getFullYear() - d.getFullYear(), m = n.getMonth() - d.getMonth(), dd = n.getDate() - d.getDate();
+  if (dd < 0) { m--; dd += new Date(n.getFullYear(), n.getMonth(), 0).getDate(); }
+  if (m < 0) { y--; m += 12; }
+  const box = (v, l) => `<div class="stat"><b>${v}</b><small>${l}</small></div>`;
+  $('ageOut').innerHTML = box(y, 'Years') + box(m, 'Months') + box(dd, 'Days') + box(n.getHours(), 'Hours');
+  $('ageTot').textContent = `That is ${Math.floor((n - d) / 864e5).toLocaleString()} days, or ${Math.floor((n - d) / 36e5).toLocaleString()} hours, since you were born.`;
+});
+let unit = 'm';
+const cfg = { m: { h: [100, 220, 170], w: [30, 200, 70] }, i: { h: [40, 90, 67], w: [66, 440, 154] } };
+function setUnit(u) {
+  const hv = +$('bH').value, wv = +$('bW').value, had = $('bH').max !== '';
+  let nh, nw;
+  if (had && u !== unit) { nh = u === 'i' ? hv / 2.54 : hv * 2.54; nw = u === 'i' ? wv * 2.2046 : wv / 2.2046; }
+  unit = u; const c = cfg[u];
+  [['bH', c.h, nh], ['bW', c.w, nw]].forEach(([id, [mn, mx, df], cv]) => { const el = $(id); el.min = mn; el.max = mx; el.value = cv !== undefined ? Math.round(cv) : df; });
+  $('uM').classList.toggle('on', u === 'm'); $('uI').classList.toggle('on', u === 'i'); calcBMI();
+}
+function calcBMI() {
+  const h = +$('bH').value, w = +$('bW').value;
+  $('bHv').textContent = unit === 'm' ? h + ' cm' : `${Math.floor(h / 12)}′ ${h % 12}″`;
+  $('bWv').textContent = w + (unit === 'm' ? ' kg' : ' lbs');
+  const bmi = unit === 'm' ? w / ((h / 100) ** 2) : 703 * w / (h * h); if (!isFinite(bmi)) return;
+  const [cat, col] = bmi < 18.5 ? ['Underweight', '#22d3ee'] : bmi < 25 ? ['Normal', '#34d399'] : bmi < 30 ? ['Overweight', '#fbbf24'] : ['Obese', '#fb7185'];
+  $('bmiNum').textContent = bmi.toFixed(1); $('bmiNum').style.color = col;
+  $('bmiCat').textContent = cat; $('bmiCat').style.color = col;
+  $('bmiBar').style.background = col; $('bmiBar').style.width = Math.min(100, Math.max(3, (bmi - 10) / 30 * 100)) + '%';
+}
+$('bH').addEventListener('input', calcBMI); $('bW').addEventListener('input', calcBMI);
+$('uM').onclick = () => unit !== 'm' && setUnit('m'); $('uI').onclick = () => unit !== 'i' && setUnit('i');
+setUnit('m');
+
+/* ---------- 3. Image compressor ---------- */
+let imgSrc = null, imgBlob = null, imgName = 'image';
+function compress() {
+  if (!imgSrc) return;
+  const q = $('imgQ').value / 100, w = Math.min(parseInt($('imgW').value) || imgSrc.naturalWidth, imgSrc.naturalWidth), h = Math.round(imgSrc.naturalHeight * w / imgSrc.naturalWidth);
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(imgSrc, 0, 0, w, h);
+  cv.toBlob(b => {
+    imgBlob = b; const fr = new FileReader(); fr.onload = () => $('imgPrev').src = fr.result; fr.readAsDataURL(b);
+    $('imgC').textContent = fmt(b.size);
+    const saved = Math.round((1 - b.size / imgSrc._size) * 100);
+    $('imgS').textContent = saved > 0 ? saved + '% smaller' : 'No gain'; $('imgS').style.color = saved > 0 ? 'var(--ok)' : 'var(--warn)';
+  }, 'image/jpeg', q);
+}
+const compressD = debounce(compress, 120);
+setupDrop($('imgDrop'), $('imgIn'), async files => {
+  const f = files.find(isImg); if (!f) return toast('Please choose an image file', false);
+  try { imgSrc = await loadImg(f); imgSrc._size = f.size; imgName = f.name.replace(/\.[^.]+$/, ''); $('imgO').textContent = fmt(f.size); $('imgPanel').classList.remove('hide'); compress(); }
+  catch (e) { toast(e.message, false); }
+});
+$('imgQ').addEventListener('input', () => { $('imgQv').textContent = $('imgQ').value; compressD(); });
+$('imgW').addEventListener('input', compressD);
+$('imgDl').onclick = () => { if (imgBlob) { download(imgBlob, imgName + '-compressed.jpg'); toast('Image downloaded'); } };
+
+/* ---------- 4. PDF utilities (pdf-lib) ---------- */
+const modes = {
+  merge: { label: 'Merge PDF', go: 'Merge PDFs', accept: '.pdf,application/pdf', hint: 'Add two or more PDFs. They are merged in the order listed.', min: 2 },
+  compress: { label: 'Compress PDF', go: 'Compress PDF', accept: '.pdf,application/pdf', hint: 'Rewrites the PDF with an optimised structure. Savings are small on files made mostly of images.', min: 1 },
+  img2pdf: { label: 'Images to PDF', go: 'Create PDF', accept: 'image/*', hint: 'Each image becomes one page, in the order listed.', min: 1 }
+};
+let pdfMode = 'merge', pdfFiles = [];
+function renderPdf() {
+  const m = modes[pdfMode];
+  $('pdfTabs').innerHTML = Object.entries(modes).map(([k, v]) => `<button data-m="${k}" class="${k === pdfMode ? 'on' : ''}">${v.label}</button>`).join('');
+  $('pdfHint').textContent = m.hint; $('pdfIn').accept = m.accept; $('pdfGoT').textContent = m.go;
+  $('pdfList').innerHTML = pdfFiles.map((f, i) => `<li class="li"><span>${f.name.replace(/[<>&]/g, '')}</span><span class="mut" style="white-space:nowrap">${fmt(f.size)} &nbsp;<button data-rm="${i}" aria-label="Remove">✕</button></span></li>`).join('');
+  $('pdfGo').disabled = pdfFiles.length < m.min;
+}
+$('pdfTabs').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) { pdfMode = b.dataset.m; pdfFiles = []; renderPdf(); } });
+$('pdfList').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { pdfFiles.splice(+b.dataset.rm, 1); renderPdf(); } });
+setupDrop($('pdfDrop'), $('pdfIn'), files => {
+  const ok = files.filter(f => pdfMode === 'img2pdf' ? isImg(f) : f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+  if (ok.length < files.length) toast('Some files were skipped (wrong type)', false);
+  pdfFiles = pdfMode === 'compress' ? ok.slice(0, 1) : pdfFiles.concat(ok); renderPdf();
+});
+async function imgToJpeg(file) {
+  const img = await loadImg(file), cv = document.createElement('canvas'); cv.width = img.naturalWidth; cv.height = img.naturalHeight;
+  const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(img, 0, 0);
+  const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92));
+  return { bytes: await blob.arrayBuffer(), w: cv.width, h: cv.height };
+}
+$('pdfGo').onclick = async () => {
+  $('pdfGo').disabled = true; $('pdfGoT').textContent = 'Working…';
+  try {
+    const { PDFDocument } = PDFLib; let out, name;
+    if (pdfMode === 'merge') {
+      out = await PDFDocument.create();
+      for (const f of pdfFiles) { const src = await PDFDocument.load(await f.arrayBuffer(), { ignoreEncryption: true }); (await out.copyPages(src, src.getPageIndices())).forEach(p => out.addPage(p)); }
+      name = 'merged.pdf';
+    } else if (pdfMode === 'compress') {
+      out = await PDFDocument.load(await pdfFiles[0].arrayBuffer(), { ignoreEncryption: true }); out.setProducer('Toolify Hub'); name = pdfFiles[0].name.replace(/\.pdf$/i, '') + '-compressed.pdf';
+    } else {
+      out = await PDFDocument.create();
+      for (const f of pdfFiles) { const { bytes, w, h } = await imgToJpeg(f), img = await out.embedJpg(bytes); out.addPage([w, h]).drawImage(img, { x: 0, y: 0, width: w, height: h }); }
+      name = 'images.pdf';
+    }
+    const bytes = await out.save({ useObjectStreams: true });
+    download(new Blob([bytes], { type: 'application/pdf' }), name);
+    toast(pdfMode === 'compress' ? `Done: ${fmt(pdfFiles[0].size)} → ${fmt(bytes.length)}` : `${name} is ready and downloaded`);
+  } catch (e) { toast('Could not process file: ' + (e.message || 'invalid or encrypted PDF'), false); }
+  renderPdf();
+};
+renderPdf();
+
+
+
+const TITLES = {"qr-code-generator": "Free QR Code Generator \u2013 Custom Colors, Download PNG | Kitzora", "age-bmi-calculator": "Age Calculator & BMI Calculator \u2013 Exact Years, Months, Days | Kitzora", "image-compressor": "Free Image Compressor & Resizer \u2013 Reduce Photo Size Online | Kitzora", "pdf-tools": "Free PDF Tools \u2013 Merge PDF, Compress PDF, Images to PDF | Kitzora"}, ids = Object.keys(TITLES);
+function show(id) {
+  if (!ids.includes(id)) id = ids[0];
+  document.querySelectorAll('[data-tool]').forEach(s => s.classList.toggle('hide', s.id !== id));
+  document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('on', b.dataset.nav === id));
+  document.title = TITLES[id]; scrollTo({ top: 0 });
+}
+document.querySelectorAll('[data-nav],a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); const id = a.getAttribute('href').slice(1); show(id); try { history.replaceState(null, '', '#' + id); } catch (x) {} }));
+window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+let h0 = ''; try { h0 = location.hash.slice(1); } catch (e) {}
+show(h0);
+
+});
+document.addEventListener('DOMContentLoaded', icons); if (document.readyState !== 'loading') icons();
+window.addEventListener('load', icons);
+</script>
+</body>
+</html>
